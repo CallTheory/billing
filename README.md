@@ -1,6 +1,6 @@
 # Call Theory Billing
 
-An advanced billing bridge for Amtelco-based call centers.
+The advanced billing bridge for Amtelco-based call centers.
 
 ## Features
 
