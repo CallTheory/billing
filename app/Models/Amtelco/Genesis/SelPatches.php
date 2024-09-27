@@ -2,10 +2,24 @@
 
 namespace App\Models\Amtelco\Genesis;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Exception;
 
-class SelPatches extends Model
+class SelPatches extends GenesisStat
 {
-    use HasFactory;
+    public static function amtelcoStatisticDefinition(): string
+    {
+        return 'The number of patches with an agent.';
+    }
+    public function amtelcoSqlCommand(): string
+    {
+        return
+            <<<TSQL
+        select 'TODO';
+        TSQL;
+    }
+
+    public function amtelcoSqlParams(): array
+    {
+        return [];
+    }
 }

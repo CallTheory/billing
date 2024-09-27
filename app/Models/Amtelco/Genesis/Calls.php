@@ -2,10 +2,24 @@
 
 namespace App\Models\Amtelco\Genesis;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Exception;
 
-class Calls extends Model
+class Calls extends GenesisStat
 {
-    use HasFactory;
+    public static function amtelcoStatisticDefinition(): string
+    {
+        return 'The total calls of all Call Types.';
+    }
+    public function amtelcoSqlCommand(): string
+    {
+        return
+            <<<TSQL
+        select 'TODO';
+        TSQL;
+    }
+
+    public function amtelcoSqlParams(): array
+    {
+        return [];
+    }
 }

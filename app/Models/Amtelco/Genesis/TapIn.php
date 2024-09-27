@@ -2,10 +2,24 @@
 
 namespace App\Models\Amtelco\Genesis;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Exception;
 
-class TapIn extends Model
+class TapIn extends GenesisStat
 {
-    use HasFactory;
+    public static function amtelcoStatisticDefinition(): string
+    {
+        return 'A count of incoming TAP messages. This count includes replies and unsolicited TAP messages.';
+    }
+    public function amtelcoSqlCommand(): string
+    {
+        return
+            <<<TSQL
+        select 'TODO';
+        TSQL;
+    }
+
+    public function amtelcoSqlParams(): array
+    {
+        return [];
+    }
 }

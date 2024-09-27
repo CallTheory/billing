@@ -2,10 +2,24 @@
 
 namespace App\Models\Amtelco\Genesis;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Exception;
 
-class ScriptEditsDur extends Model
+class ScriptEditsDur extends GenesisStat
 {
-    use HasFactory;
+    public static function amtelcoStatisticDefinition(): string
+    {
+        return 'The duration of time users spent in the Easy Script Editor before saving script changes.';
+    }
+    public function amtelcoSqlCommand(): string
+    {
+        return
+            <<<TSQL
+        select 'TODO';
+        TSQL;
+    }
+
+    public function amtelcoSqlParams(): array
+    {
+        return [];
+    }
 }

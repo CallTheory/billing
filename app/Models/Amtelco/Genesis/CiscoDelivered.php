@@ -2,10 +2,24 @@
 
 namespace App\Models\Amtelco\Genesis;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Exception;
 
-class CiscoDelivered extends Model
+class CiscoDelivered extends GenesisStat
 {
-    use HasFactory;
+    public static function amtelcoStatisticDefinition(): string
+    {
+        return 'A count of messages delivered by the Cisco component of the IS Service.';
+    }
+    public function amtelcoSqlCommand(): string
+    {
+        return
+            <<<TSQL
+        select 'TODO';
+        TSQL;
+    }
+
+    public function amtelcoSqlParams(): array
+    {
+        return [];
+    }
 }

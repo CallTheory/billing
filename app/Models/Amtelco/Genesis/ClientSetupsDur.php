@@ -2,10 +2,47 @@
 
 namespace App\Models\Amtelco\Genesis;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Exception;
 
-class ClientSetupsDur extends Model
+class ClientSetupsDur extends GenesisStat
 {
-    use HasFactory;
+    public static function amtelcoStatisticDefinition(): string
+    {
+        return 'The duration of time users spent in Client Setup before saving Client changes.';
+    }
+    public function amtelcoSqlCommand(): string
+    {
+        return
+            <<<TSQL
+            select
+                cltClients.cltID,
+                cltClients.ClientNumber,
+                cltClients.BillingCode,
+                cltClients.ClientName,
+                statClientMaintenance.ID as MaintenanceID,
+                statClientMaintenance.agtID,
+                statClientMaintenance.stnID,
+                statClientMaintenance.stnType,
+                statClientMaintenance.Stamp,
+                statClientMaintenance.Duration,
+                statClientMaintenance.[Type],
+                statClientMaintenance.Saved
+            from statClientMaintenance
+            left join cltClients on cltClients.cltID = statClientMaintenance.cltID
+            where statClientMaintenance.ID = ?
+        TSQL;
+    }
+
+    public function amtelcoSqlParams(): array
+    {
+        if(!isset($this->maintenanceID)){
+            throw new Exception('Maintenance ID is required');
+        }
+
+        return [
+            [
+                $this->maintenanceID, SQLSRV_PARAM_IN, SQLSRV_PHPTYPE_INT, SQLSRV_SQLTYPE_BIGINT
+            ]
+        ];
+    }
 }
