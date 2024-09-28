@@ -13,13 +13,31 @@ class Dispatches extends GenesisStat
     public function amtelcoSqlCommand(): string
     {
         return
-            <<<TSQL
-        select 'TODO';
+        <<<TSQL
+            SELECT
+                statDispatchAdded.dispID as [DispatchID],
+                statDispatchAdded.[Timestamp],
+                statDispatchAdded.JobName,
+                statDispatchAdded.msgID,
+                statDispatchAdded.cltID,
+                statDispatchAdded.agtID,
+                statDispatchAdded.Groups,
+                statDispatchAdded.TimezoneOffset
+            FROM statDispatchAdded
+            where statDispatchAdded.dispID = ?;
         TSQL;
     }
 
     public function amtelcoSqlParams(): array
     {
-        return [];
+        if(!isset($this->dispatchID)){
+            throw new Exception('Dispatch ID is required');
+        }
+
+        return [
+            [
+                $this->dispatchID, SQLSRV_PARAM_IN, SQLSRV_PHPTYPE_INT, SQLSRV_SQLTYPE_BIGINT
+            ]
+        ];
     }
 }

@@ -13,8 +13,19 @@ class MsgEdits extends GenesisStat
     public function amtelcoSqlCommand(): string
     {
         return
-            <<<TSQL
-        select 'TODO';
+        <<<TSQL
+            SELECT msgMessages.cltID,
+                cltClients.cltID,
+                cltClients.ClientNumber,
+                cltClients.BillingCode,
+                cltClients.ClientName,
+                msgMessages.*,
+                msgHistories.*
+                FROM msgHistories
+             JOIN msgMessages  ON msgHistories.msgId = msgMessages.msgId
+             left join cltClients on msgMessages.cltId = cltClients.cltId
+             where msgHistories.histId = ?
+             and msgHistories.DispositionId = 1
         TSQL;
     }
 

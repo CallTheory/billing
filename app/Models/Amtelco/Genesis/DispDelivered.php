@@ -14,7 +14,27 @@ class DispDelivered extends GenesisStat
     {
         return
             <<<TSQL
-        select 'TODO';
+        SELECT
+                statDispatchAdded.dispID as [DispatchID],
+                statDispatchAdded.JobName,
+                cltClients.cltID,
+                cltClients.ClientNumber,
+                cltClients.BillingCode,
+                cltClients.ClientName,
+                statDispatchAdded.[Timestamp] as DispatchStarted,
+                statDispatchDeleted.[Timestamp] as [DispatchEnded],
+                CAST(DATEDIFF(SS, statDispatchAdded.Timestamp , statDispatchDeleted.Timestamp) AS decimal(18,0)) AS Duration,
+                statDispatchAdded.TimezoneOffset,
+                statDispatchAdded.msgID,
+                statDispatchAdded.cltID,
+                statDispatchAdded.agtID as DispatchStartAgtID,
+                statDispatchDeleted.agtID as DispatchEndAgtID,
+                statDispatchAdded.Groups
+            from statDispatchDeleted
+                JOIN statDispatchAdded  ON statDispatchAdded.dispID = statDispatchDeleted.dispID
+                left join cltClients on statDispatchAdded.cltid = cltClients.cltId
+            where statDispatchAdded.dispID = ?
+            and statDispatchDeleted.Reason = 1;
         TSQL;
     }
 

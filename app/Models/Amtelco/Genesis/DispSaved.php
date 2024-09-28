@@ -13,13 +13,41 @@ class DispSaved extends GenesisStat
     public function amtelcoSqlCommand(): string
     {
         return
-            <<<TSQL
-        select 'TODO';
+        <<<TSQL
+           SELECT
+                statDispatchAdded.dispID as [DispatchID],
+                statDispatchAdded.JobName,
+                cltClients.cltID,
+                cltClients.ClientNumber,
+                cltClients.BillingCode,
+                cltClients.ClientName,
+                statDispatchAdded.[Timestamp] as DispatchStarted,
+                statDispatchDeleted.[Timestamp] as [DispatchEnded],
+                CAST(DATEDIFF(SS, statDispatchAdded.Timestamp , statDispatchDeleted.Timestamp) AS decimal(18,0)) AS Duration,
+                statDispatchAdded.TimezoneOffset,
+                statDispatchAdded.msgID,
+                statDispatchAdded.cltID,
+                statDispatchAdded.agtID as DispatchStartAgtID,
+                statDispatchDeleted.agtID as DispatchEndAgtID,
+                statDispatchAdded.Groups
+            from statDispatchDeleted
+                JOIN statDispatchAdded  ON statDispatchAdded.dispID = statDispatchDeleted.dispID
+                left join cltClients on statDispatchAdded.cltid = cltClients.cltId
+            where statDispatchAdded.dispID = ?
+            and statDispatchDeleted.Reason = 0;
         TSQL;
     }
 
     public function amtelcoSqlParams(): array
     {
-        return [];
+        if(!isset($this->dispatchID)){
+            throw new Exception('Dispatch ID is required');
+        }
+
+        return [
+            [
+                $this->dispatchID, SQLSRV_PARAM_IN, SQLSRV_PHPTYPE_INT, SQLSRV_SQLTYPE_BIGINT
+            ]
+        ];
     }
 }

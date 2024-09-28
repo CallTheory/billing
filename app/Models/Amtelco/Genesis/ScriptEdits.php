@@ -13,8 +13,24 @@ class ScriptEdits extends GenesisStat
     public function amtelcoSqlCommand(): string
     {
         return
-            <<<TSQL
-        select 'TODO';
+        <<<TSQL
+            select
+                cltClients.cltID,
+                cltClients.ClientNumber,
+                cltClients.BillingCode,
+                cltClients.ClientName,
+                statClientMaintenance.ID as MaintenanceID,
+                statClientMaintenance.agtID,
+                statClientMaintenance.stnID,
+                statClientMaintenance.stnType,
+                statClientMaintenance.Stamp,
+                statClientMaintenance.Duration,
+                statClientMaintenance.[Type],
+                 statClientMaintenance.Saved
+            from statClientMaintenance
+            left join cltClients on cltClients.cltID = statClientMaintenance.cltID
+            where statClientMaintenance.ID = ?
+            and statClientMaintenance.[Type] = 1;
         TSQL;
     }
 

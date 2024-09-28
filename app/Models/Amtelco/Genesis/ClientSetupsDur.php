@@ -30,6 +30,7 @@ class ClientSetupsDur extends GenesisStat
             from statClientMaintenance
             left join cltClients on cltClients.cltID = statClientMaintenance.cltID
             where statClientMaintenance.ID = ?
+            and statClientMaintenance.[Type] = 0;
         TSQL;
     }
 
